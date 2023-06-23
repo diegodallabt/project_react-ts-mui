@@ -74,9 +74,7 @@ const GamesList = () => {
   );
 
   if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-    <CircularProgress />
-  </div>;
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}><CircularProgress /></div>;
   }
 
   if (isError) {
@@ -96,9 +94,27 @@ const GamesList = () => {
   }
 
   return (
-    <div>
-      
-    </div>
+    <Box sx={{ width: '70%', margin: '0 auto', padding: '30px 0'}}>
+      <Grid container spacing={2}>
+        {data?.map((game) => (
+          <Grid item xs={12} sm={6} md={4} key={game.id}>
+            <Card sx={{ maxWidth: "450px", padding: "5px", borderRadius: "8px", mx: "auto" }}>
+              <CardMedia
+                component="img"
+                height="250"
+                image={game.thumbnail}
+                alt={game.title}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center' }}>
+                  {game.title}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
