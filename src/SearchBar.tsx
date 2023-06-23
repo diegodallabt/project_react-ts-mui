@@ -45,7 +45,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onchange, msg }) => {
         <TextField id="search-textfield" value={searchTerm} onChange={onchange} label={msg} variant="standard" className={style.textfield}
         InputProps={{
             style: {
-            padding: "0px 5px 0px 10px", 
+            padding: "0px 5px 0px 5px", 
             color: "#fff",
             borderBottom: "1px solid #9e9e9e",
             },

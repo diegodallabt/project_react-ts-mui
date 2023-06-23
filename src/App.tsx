@@ -156,7 +156,8 @@ const GamesList = () => {
         </div>
 
         <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
-          {Array.from(genres).map((genre) => (<RadioOption option={genre}/>))}
+          {Array.from(genres).map((genre) => (<RadioOption option={genre} label={genre}/>))}
+          <RadioOption option="" label="Todos"/>
         </RadioGroup> 
 
         <Grid container spacing={2}>
