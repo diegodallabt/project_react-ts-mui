@@ -5,11 +5,11 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
 import { useUI } from "./UIProvider";
 import { makeStyles } from '@material-ui/styles';
-import { RadioGroup } from "@mui/material";
+import { Box, RadioGroup } from "@mui/material";
 import GameCard from "./GameCard";
 import SearchBar from "./SearchBar";
 import RadioOption from "./RadioOption";
-import ErrorBox from "./ErrorBox";
+import AlertBox from "./AlertBox";
 
 interface Game {
   id: number;
@@ -143,7 +143,7 @@ const GamesList = () => {
   if (isError) {
     return (
       <div className={style.centralize}>
-        <ErrorBox msg="Não foi possível obter os dados, um erro foi detectado."/>
+        <AlertBox msg="Não foi possível obter os dados, um erro foi detectado." type="error"/>
       </div>
     );
   }
@@ -156,10 +156,11 @@ const GamesList = () => {
         </div>
 
         <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
-          {Array.from(genres).map((genre) => (<RadioOption option={genre} label={genre}/>))}
-          <RadioOption option="" label="Todos"/>
+          {Array.from(genres).map((genre) => (<RadioOption key={genre} option={genre} label={genre}/>))}
+          <RadioOption key="all" option="" label="Todos"/>
         </RadioGroup> 
-
+      
+      {filteredData && filteredData.length > 0 ? (
         <Grid container spacing={2}>
           {
             filteredData?.map((game) => (
@@ -168,10 +169,12 @@ const GamesList = () => {
               </Grid>
             ))
           }
-        </Grid>
-
+        </Grid>): (
+          <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh'}}>
+            <AlertBox msg="Nenhum item encontrado para essa busca." type="info" />
+          </Box>
+        )}
       </div>
-
     </div>
   );
 };

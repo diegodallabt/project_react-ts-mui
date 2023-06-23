@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 const RadioOption: React.FC<RadioOptionProps> = ({ option, label }) => {
     const style = useStyles();
-    return <FormControlLabel key={option} value={option} classes={{ label: style.colorWhite }} control={<Radio sx={{color: "#fff", '&.Mui-checked': { color: "#ccc"}}}/>} label={label}/>;
+    return <FormControlLabel value={option} classes={{ label: style.colorWhite }} control={<Radio sx={{color: "#fff", '&.Mui-checked': { color: "#ccc"}}}/>} label={label}/>;
 };
 
 export default RadioOption;
