@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     maxWidth: "350px", 
     padding: "10px", 
     borderRadius: "8px", 
-    margin: "10px auto",
+    margin: "2px auto",
   },
 
   textfieldContent: {
@@ -76,16 +76,26 @@ const useStyles = makeStyles({
   },
 
   content: {
-    width: "61%",
+    width: "55%",
     margin: "0 auto",
-    padding: "30px 0" 
+    padding: "30px 0",
+
+    '@media (max-width: 600px)': {
+      width: "61%",
+    },
   },
 
   centralize: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh" 
+    height: "100vh",
+  },
+
+  error: {
+    '@media (max-width: 600px)': {
+      width: "80%",
+    },
   },
 
   colorWhite: {
@@ -99,7 +109,7 @@ const queryClient = new QueryClient();
 const fetchGames = async (): Promise<Game[]> => {
   try {
     const response = await axios.get(
-      "https://games-test-api-81e9fb0d564a.herokuapp.com/api/data",
+      "https://" + process.env.REACT_APP_API_URL,
       {
         headers: {
            "dev-email-address": "ddb.thedoldi@gmail.com",
@@ -123,16 +133,9 @@ const GamesList = () => {
     "games",
     fetchGames,
     {
+      retry: false,
       onError: (error) => {
         if (error.response) {
-          if (error.code === "ECONNABORTED") {
-            defineToast({
-              open: true,
-              message: "O servidor demorou para responder, tente mais tarde.",
-              title: "Erro",
-              severity: "error",
-            });
-          }
           if (error.response.status >= 500 && error.response.status <= 509) {
             defineToast({
               open: true,
@@ -140,7 +143,24 @@ const GamesList = () => {
               title: "Erro",
               severity: "error",
             });
-          } else {
+          }else {
+            defineToast({
+              open: true,
+              message: "O servidor não conseguirá responder por agora, tente voltar novamente mais tarde.",
+              title: "Erro",
+              severity: "error",
+            });
+          }
+        }
+        if(error.response === undefined) {
+          if (error.code === "ECONNABORTED") {
+            defineToast({
+              open: true,
+              message: "O servidor demorou para responder, tente mais tarde.",
+              title: "Erro",
+              severity: "error",
+            });
+          }else {
             defineToast({
               open: true,
               message: "O servidor não conseguirá responder por agora, tente voltar novamente mais tarde.",
@@ -182,7 +202,7 @@ const GamesList = () => {
   if (isError) {
     return (
       <div className={style.centralize}>
-        <Alert severity="error">Não foi possível realizar a operação, um erro foi detectado.</Alert>
+        <Alert severity="error" className={style.error}>Não foi possível obter os dados, um erro foi detectado.</Alert>
       </div>
     );
   }
@@ -214,13 +234,7 @@ const GamesList = () => {
 
          <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
           {Array.from(genres).map((genre) => (
-            <FormControlLabel key={genre} value={genre} classes={{ label: style.colorWhite }} control={<Radio
-            sx={{
-              color: "#fff",
-              '&.Mui-checked': {
-                color: "#ccc",
-              },
-            }}/>} label={genre}/>))
+            <FormControlLabel key={genre} value={genre} classes={{ label: style.colorWhite }} control={<Radio sx={{color: "#fff", '&.Mui-checked': { color: "#ccc"},}}/>} label={genre}/>))
           }
         </RadioGroup> 
 
@@ -228,7 +242,7 @@ const GamesList = () => {
           {filteredData?.map((game) => (
             <Grid item xs={12} sm={6} md={4} key={game.id}>
               <Card className={style.card}>
-                <CardMedia component="img" height="200" image={game.thumbnail} alt={game.title} />
+                <CardMedia component="img" image={game.thumbnail} alt={game.title} />
                 <CardContent>
                   <Typography gutterBottom component="div" className={style.titleCenter}>
                     {game.title}
