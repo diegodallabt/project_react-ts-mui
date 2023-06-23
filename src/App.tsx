@@ -94,19 +94,19 @@ const GamesList = () => {
   }
 
   return (
-    <Box sx={{ width: '70%', margin: '0 auto', padding: '30px 0'}}>
+    <Box sx={{ width: '61%', margin: '0 auto', padding: '30px 0'}}>
       <Grid container spacing={2}>
         {data?.map((game) => (
           <Grid item xs={12} sm={6} md={4} key={game.id}>
-            <Card sx={{ maxWidth: "450px", padding: "5px", borderRadius: "8px", mx: "auto" }}>
+            <Card sx={{ maxWidth: "350px", padding: "5px", borderRadius: "8px", mx: "auto", my: "10px" }}>
               <CardMedia
                 component="img"
-                height="250"
+                height="200"
                 image={game.thumbnail}
                 alt={game.title}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center' }}>
+                <Typography gutterBottom component="div" sx={{ textAlign: 'center' }}>
                   {game.title}
                 </Typography>
               </CardContent>
