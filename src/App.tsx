@@ -1,5 +1,4 @@
 import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
@@ -13,11 +12,13 @@ import CardMedia from "@mui/material/CardMedia";
 import TextField from "@mui/material/TextField";
 import { Search } from "@mui/icons-material";
 import { makeStyles } from '@material-ui/styles';
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 interface Game {
   id: number;
   thumbnail: string;
   title: string;
+  genre: string;
 }
 
 const useStyles = makeStyles({
@@ -56,20 +57,21 @@ const useStyles = makeStyles({
     margin: "10px auto",
   },
 
-  textfield_content: {
+  textfieldContent: {
     display: 'flex',
     alignItems: 'flex-end'
   },
 
-  textfield_container: {
+  containerAlign: {
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: "20px 0px"
+    margin: "20px 0px",
+    color: "#fff"
   },
   
-  title: {
+  titleCenter: {
     textAlign: "center",
   },
 
@@ -79,18 +81,15 @@ const useStyles = makeStyles({
     padding: "30px 0" 
   },
 
-  error_container: {
+  centralize: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: "100vh" 
   },
 
-  loader: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh"
+  colorWhite: {
+    color: "#fff",
   }
 });
 
@@ -118,6 +117,7 @@ const fetchGames = async (): Promise<Game[]> => {
 const GamesList = () => {
   const { defineToast } = useUI();
   const style = useStyles();
+  const [selectedGenre, setSelectedGenre] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError } = useQuery<Game[], AxiosError>(
     "games",
@@ -153,8 +153,18 @@ const GamesList = () => {
     }
   );
 
-  const filteredData = data?.filter((game) =>
-    game.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+
+  const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedGenre(event.target.value);
+  };
+
+  const genres = Array.from(new Set(data?.map((game) => game.genre)));
+  
+
+  const filteredData = data?.filter(
+    (game) =>
+      game.title.toLowerCase().startsWith(searchTerm.toLowerCase()) &&
+      (selectedGenre === "" || game.genre === selectedGenre)
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,7 +173,7 @@ const GamesList = () => {
 
   if (isLoading) {
     return (
-      <div className={style.loader}>
+      <div className={style.centralize}>
         <CircularProgress />
       </div>
     );
@@ -171,8 +181,8 @@ const GamesList = () => {
 
   if (isError) {
     return (
-      <div className={style.error_container}>
-        <Alert severity="error">Algo de errado aconteceu.</Alert>
+      <div className={style.centralize}>
+        <Alert severity="error">Não foi possível realizar a operação, um erro foi detectado.</Alert>
       </div>
     );
   }
@@ -182,8 +192,8 @@ const GamesList = () => {
 
       <div className={style.content}>
         
-        <div className={style.textfield_container}>
-          <div className={style.textfield_content}>
+        <div className={style.containerAlign}>
+          <div className={style.textfieldContent}>
               <Search sx={{ color: '#FFFFFF', mr: 1, my: 0.5 }} />
               <TextField id="search-textfield" value={searchTerm} onChange={handleSearchChange} label="Buscar por jogo" variant="standard" className={style.textfield}
                 InputProps={{
@@ -202,13 +212,25 @@ const GamesList = () => {
           </div>
         </div>
 
+         <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
+          {Array.from(genres).map((genre) => (
+            <FormControlLabel key={genre} value={genre} classes={{ label: style.colorWhite }} control={<Radio
+            sx={{
+              color: "#fff",
+              '&.Mui-checked': {
+                color: "#ccc",
+              },
+            }}/>} label={genre}/>))
+          }
+        </RadioGroup> 
+
         <Grid container spacing={2}>
           {filteredData?.map((game) => (
             <Grid item xs={12} sm={6} md={4} key={game.id}>
               <Card className={style.card}>
                 <CardMedia component="img" height="200" image={game.thumbnail} alt={game.title} />
                 <CardContent>
-                  <Typography gutterBottom component="div" className={style.title}>
+                  <Typography gutterBottom component="div" className={style.titleCenter}>
                     {game.title}
                   </Typography>
                 </CardContent>
