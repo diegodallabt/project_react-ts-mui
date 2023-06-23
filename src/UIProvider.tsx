@@ -53,6 +53,7 @@ const UIProvider: FC<{
         }}
       >
         <Alert
+          sx={{fontFamily: 'Lato'}}
           severity={toastProps.severity ?? 'success'}
           title={toastProps.title}
         >
