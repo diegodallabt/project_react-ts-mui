@@ -23,13 +23,13 @@ const useStyles = makeStyles({
 const GameCard: React.FC<GameCardProps> = ({ title, image }) => {
     const style = useStyles();
     return <Card className={style.card} sx={{backgroundColor: "#1C1C1C", color: "#fff", boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.4)", transition: 'background-color 0.6s', '&:hover': { backgroundColor: ' #2E2E2E'},}}>
-    <CardMedia component="img" image={image} alt={title} />
-    <CardContent>
-      <Typography gutterBottom component="div" sx={{fontFamily:'Lato'}} className={style.titleCenter}>
-        {title}
-      </Typography>
-    </CardContent>
-  </Card>;
+        <CardMedia component="img" image={image} alt={title} />
+            <CardContent>
+                <Typography gutterBottom component="div" sx={{fontFamily:'Lato'}} className={style.titleCenter}>
+                    {title}
+                </Typography>
+            </CardContent>
+    </Card>;
 };
 
 export default GameCard;

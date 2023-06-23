@@ -155,18 +155,18 @@ const GamesList = () => {
           <SearchBar searchTerm={searchTerm} onchange={handleSearchChange} msg="Buscar por um jogo"/>
         </div>
 
-         <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
-          {Array.from(genres).map((genre) => (
-            <RadioOption option={genre}/>))
-          }
+        <RadioGroup name="genre" row value={selectedGenre} onChange={handleGenreChange} className={style.containerAlign}>
+          {Array.from(genres).map((genre) => (<RadioOption option={genre}/>))}
         </RadioGroup> 
 
         <Grid container spacing={2}>
-          {filteredData?.map((game) => (
-            <Grid item xs={12} sm={6} md={4} key={game.id}>
-              <GameCard title={game.title} image={game.thumbnail} />
-            </Grid>
-          ))}
+          {
+            filteredData?.map((game) => (
+              <Grid item xs={12} sm={6} md={4} key={game.id}>
+                <GameCard title={game.title} image={game.thumbnail} />
+              </Grid>
+            ))
+          }
         </Grid>
 
       </div>
