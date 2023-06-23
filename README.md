@@ -4,10 +4,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Web page
 ![Web page](public/page-web.png)
+
 Essa é a página inicial da aplicação, onde contém o campo de pesquisa e o RatioGroup para filtrar o gênero que quiser.
 
 ## Mobile page
 ![Mobile page](public/page-mobile.png)
+
 Essa é a pagina inicial da aplicação para dispositivos mobile.
 
 ## Available Scripts
