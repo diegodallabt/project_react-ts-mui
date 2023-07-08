@@ -34,20 +34,24 @@ const useStyles = makeStyles({
 
     textfieldContent: {
         display: 'flex',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+
+        '@media (max-width: 600px)': {
+          marginLeft: '10px',     
+        },
     },
 });
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onchange, msg }) => {
     const style = useStyles();
     return <div className={style.textfieldContent}>
-        <Search sx={{ color: '#FFFFFF', mr: 1, my: 0.5 }} />
-        <TextField id="search-textfield" value={searchTerm} onChange={onchange} label={msg} variant="standard" className={style.textfield}
+        <Search sx={{ color: '#FFFFFF', mr: 1, my: 0.5, fontSize: 30}} />
+        <TextField id="search-textfield" value={searchTerm} onChange={onchange} label={msg} variant="outlined" size="small" className={style.textfield}
         InputProps={{
             style: {
-            padding: "0px 5px 0px 5px", 
+            width: '85%',
             color: "#fff",
-            borderBottom: "1px solid #9e9e9e",
+              
             },
         }}
         InputLabelProps={{

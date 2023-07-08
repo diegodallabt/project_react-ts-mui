@@ -1,6 +1,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Grid from "@mui/material/Grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
 import { useUI } from "./UIProvider";
@@ -69,6 +70,7 @@ const fetchGames = async (): Promise<Game[]> => {
 const GamesList = () => {
   const { defineToast } = useUI();
   const style = useStyles();
+  const [showButton, setShowButton] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading, isError } = useQuery<Game[], AxiosError>(
@@ -78,7 +80,7 @@ const GamesList = () => {
       retry: false,
       onError: (error) => {
         if (error.response) {
-          if (error.response.status >= 500 && error.response.status <= 509) {
+          if (error.response.status === 500 || error.response.status === 502 || error.response.status === 503 || error.response.status === 504 || error.response.status === 507 || error.response.status === 508 || error.response.status === 509) {
             defineToast({
               open: true,
               message: "O servidor falhou em responder, tente recarregar a página.",
@@ -124,6 +126,26 @@ const GamesList = () => {
     setSelectedGenre(event.target.value);
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.pageYOffset > 100) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const genres = Array.from(new Set(data?.map((game) => game.genre)));
 
   const filteredData = data?.filter(
@@ -164,21 +186,52 @@ const GamesList = () => {
           <RadioOption key="all" option="" label="Todos"/>
         </RadioGroup> 
       
+
+      
+
       {filteredData && filteredData.length > 0 ? (
-        <Grid container spacing={2}>
-          {
-            filteredData?.map((game) => (
-              <Grid item xs={12} sm={6} md={4} key={game.id}>
-                <GameCard title={game.title} image={game.thumbnail} />
-              </Grid>
-            ))
-          }
-        </Grid>): (
+        <div style={{borderTop: "1px solid #2E2E2E"}}>
+          <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: 30, marginBottom: 20,}}>
+            <AlertBox msg={filteredData? filteredData.length.toString() + " jogos encontrados":''} type="success" />
+          </div>
+          <Grid container spacing={2}>
+            {
+              filteredData?.map((game) => (
+                <Grid item xs={12} sm={6} md={4} key={game.id}>
+                  <GameCard title={game.title} image={game.thumbnail} genre={game.genre}/>
+                </Grid>
+              ))
+            }
+          </Grid>
+        </div>): (
           <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh'}}>
             <AlertBox msg="Nenhum item encontrado para essa busca." type="info" />
           </Box>
         )}
       </div>
+
+      {showButton && (
+        <button
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            background: '#2E2E2E',
+            border: 'none',
+            outline: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={handleScrollToTop}
+        >
+          <KeyboardArrowUpIcon style={{ color: '#fff' }} />
+        </button>
+    )}
     </div>
   );
 };
