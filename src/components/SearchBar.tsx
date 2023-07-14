@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
-import { Search } from '@mui/icons-material';
+import { Clear, Search } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 
 interface SearchBarProps {
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
         alignItems: 'flex-end',
 
         '@media (max-width: 600px)': {
-          marginLeft: '10px',     
+          marginLeft: '30px',     
         },
     },
 });
@@ -45,14 +47,18 @@ const useStyles = makeStyles({
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onchange, msg }) => {
     const style = useStyles();
     return <div className={style.textfieldContent}>
-        <Search sx={{ color: '#FFFFFF', mr: 1, my: 0.5, fontSize: 30}} />
+        
         <TextField id="search-textfield" value={searchTerm} onChange={onchange} label={msg} variant="outlined" size="small" className={style.textfield}
         InputProps={{
             style: {
             width: '85%',
             color: "#fff",
-              
             },
+            endAdornment: (
+              <InputAdornment position="end">
+                  <Search sx={{ color: '#FFFFFF', my: 0.5, fontSize: 20}} />      
+              </InputAdornment>
+          ),
         }}
         InputLabelProps={{
             style: {
