@@ -245,11 +245,6 @@ const GamesList = () => {
     })
   }
 
-  if (user !== null) {
-    user.providerData.forEach((profile) => {
-      console.log("  Email: " + profile.email);
-    });
-  }
 
   if (isLoading) {
     return (
@@ -390,7 +385,7 @@ const GamesList = () => {
             {
               filteredData?.map((game) => (
                 <Grid item xs={12} sm={6} md={4} key={game.id}>
-                  <GameCard title={game.title} image={game.thumbnail} genre={game.genre}/>
+                  <GameCard id={game.id} title={game.title} image={game.thumbnail} genre={game.genre}/>
                 </Grid>
               ))
             }

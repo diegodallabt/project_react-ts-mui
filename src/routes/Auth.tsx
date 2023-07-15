@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Box, Button, IconButton, InputBase, InputLabel, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -26,7 +26,6 @@ const Auth = () => {
         title: "Sucesso",
         severity: "success",
       });
-      const user = userCredential.user;
     })
     .catch((error) => {
       if(error.code === "auth/missing-password"  || error.code === "auth/invalid-email" )
@@ -43,23 +42,60 @@ const Auth = () => {
           title: "Erro",
           severity: "error",
       });
+      else
+        defineToast({
+          open: true,
+          message: "Ocorreu um erro ao fazer login, tente novamente mais tarde!",
+          title: "Erro",
+          severity: "error",
+      });
 
       console.log(error.message, error.code)
-      const errorCode = error.code;
-      const errorMessage = error.message;
     }); 
   };
 
   const handleSignupClick = () => {
     createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
-    
-    const user = userCredential.user;
+    redirectToHome();
+      defineToast({
+        open: true,
+        message: "Sua conta foi criada com sucesso.",
+        title: "Sucesso",
+        severity: "success",
+      });
   })
   .catch((error) => {
+    if(error.code === "auth/email-already-in-use")
+      defineToast({
+          open: true,
+          message: "O e-mail que está tentando usar já está em uso. Tente novamente.",
+          title: "Erro",
+          severity: "error",
+      });
+    else if(error.code === "auth/invalid-email")
+      defineToast({
+          open: true,
+          message: "Não foi possível criar uma conta com este e-mail. Tente novamente.",
+          title: "Erro",
+          severity: "error",
+      });
+    else if(error.code === "auth/weak-password")
+      defineToast({
+          open: true,
+          message: "A senha deve ter pelo menos 6 caracteres.",
+          title: "Erro",
+          severity: "error",
+      });
+    else
+      defineToast({
+          open: true,
+          message: "Ocorreu um erro ao criar sua conta, tente novamente mais tarde!",
+          title: "Erro",
+          severity: "error",
+      });
+
     console.log(error.message, error.code)
-    const errorCode = error.code;
-    const errorMessage = error.message;
   });
   }
   
