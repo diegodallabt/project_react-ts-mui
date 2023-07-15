@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
-import { Clear, Search } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
+import { Search } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 

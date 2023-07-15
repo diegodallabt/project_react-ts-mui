@@ -114,7 +114,7 @@ const Auth = () => {
     };
 
     const redirectToHome = () => {
-        navigate('/');
+        navigate('/project_react-ts-mui/');
     };
 
     return (

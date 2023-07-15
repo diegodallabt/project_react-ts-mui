@@ -9,8 +9,8 @@ const App = () => {
       <BrowserRouter>
         <div>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="project_react-ts-mui/" element={<Home />} />
+            <Route path="project_react-ts-mui/auth" element={<Auth />} />
           </Routes>
         </div>
       </BrowserRouter>

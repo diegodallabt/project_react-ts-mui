@@ -266,7 +266,7 @@ const GamesList = () => {
   };
 
   const redirectToAuth = () => {
-    navigate('/auth');
+    navigate('/project_react-ts-mui/auth');
   };
 
   const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -402,7 +402,7 @@ const GamesList = () => {
                                     <Button fullWidth onClick={handleFavoritesClick}  sx={{marginTop: '20px', color: '#FFFFFF', backgroundColor: '#202020', fontFamily: 'Lato', fontWeight: 'bold', '&:hover':{backgroundColor: '#202020'}}}>{isFavoritesSelected? 'Meus favoritos': 'Todos os jogos'}</Button>
                                     </div>): (
                                     <Typography sx={{ color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'light', lineHeight: '15px'}}>
-                                      Para usar todos os recursos disponíveis e desbloquear a sua coleção, <Link style={{textDecoration: 'none', color: '#FFFFFF', fontWeight: 'bold'}} to='/auth'>faça login</Link>.
+                                      Para usar todos os recursos disponíveis e desbloquear a sua coleção, <Link style={{textDecoration: 'none', color: '#FFFFFF', fontWeight: 'bold'}} to='/project_react-ts-mui/auth'>faça login</Link>.
                                     </Typography>
                                     )}
                                     </Box>
