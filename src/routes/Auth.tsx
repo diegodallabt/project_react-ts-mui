@@ -97,10 +97,7 @@ const Auth = () => {
 
     console.log(error.message, error.code)
   });
-  }
-  
-
-     
+  }   
 
   const handleRegisterClick = () => {
       if(isRegistered)
@@ -114,19 +111,18 @@ const Auth = () => {
   };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundImage: `url(${process.env.PUBLIC_URL + '/bg3.jpg'})`, backgroundSize: '550px', backgroundRepeat: 'repeat', backgroundColor: "#202020", minHeight: "100vh"}}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',background: 'linear-gradient(to top, rgba(10, 10, 10, 0.9), rgba(0, 0, 0, 0.9))' , minHeight: "100vh"}}>
             <motion.div initial={{ y: -1000 }}  animate={{ y: 0 }} transition={{ duration: 1 }}>
-                <Box sx={{position: 'relative', fontFamily: 'Lato', padding: '50px 20px 50px 20px', maxWidth: '470px', background: 'linear-gradient(to top, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.9))', textAlign: 'center', minWidth: '400px', marginRight: '20px', marginLeft: '20px', borderRadius: '30px', '@media (max-width: 600px)': { minWidth: '0px', padding: '19px' }}}>
+                <Box sx={{position: 'relative', fontFamily: 'Lato', padding: '50px 20px 50px 20px', maxWidth: '470px', backgroundColor: 'rgba(46,46,46,0.7)', textAlign: 'center', minWidth: '400px', marginRight: '20px', marginLeft: '20px', borderRadius: '10px', '@media (max-width: 600px)': { minWidth: '0px', padding: '19px' }}}>
                   
                   <IconButton sx={{position: 'absolute', top: '10px', left: '10px', backgroundColor: 'transparent', color: '#000'}} onClick={redirectToHome}>
                     <ArrowBackIcon sx={{fontSize: '27px', color: '#FFFFFF'}} />
                   </IconButton>
                   
                   <AccountCircleIcon sx={{fontSize: '60px', color: '#FFFFFF'}}></AccountCircleIcon>
-                  <Typography variant='h5' sx={{borderBottom: '2px solid #FFFFFF', fontWeight: 'bold', fontFamily: 'Lato', paddingX: '20px', paddingBottom: '20px', color: '#FFFFFF'}}>{isRegistered? 'Crie sua conta para continuar': 'Faça login para continuar'} </Typography>
-                
-                  
-                  <div style={{margin: '20px'}}>
+                  <Typography variant='h5' sx={{fontWeight: 'bold', fontFamily: 'Lato', paddingX: '20px', paddingBottom: '2px', color: '#FFFFFF'}}>{isRegistered? 'Crie sua conta para continuar': 'Faça login para continuar'} </Typography>
+                  <Typography sx={{ fontWeight: 'light', fontFamily: 'Lato', paddingBottom: '5px', color: '#FFFFFF'}}>{isRegistered? 'Faça parte da nossa comunidade agora mesmo.': 'Acesse sua conta e aproveite todos os recursos.'} </Typography>
+                  <div style={{margin: '10px 20px 20px 20px'}}>
                     <InputLabel sx={{color: '#FFFFFF', fontWeight: 'light', fontFamily: 'Lato'}}>E-mail</InputLabel>
                     <InputBase fullWidth placeholder='E-mail' onChange={(e) => setEmail(e.target.value)} sx={{padding: '2px 10px 2px 10px', color: '#2E2E2E', borderRadius: '5px', marginTop: '4px', marginBottom: '15px', backgroundColor: 'rgba(255,255,255, 0.7)'}}/> 
                     <InputLabel sx={{color: '#FFFFFF', fontWeight: 'light', fontFamily: 'Lato'}}>Senha</InputLabel>

@@ -140,7 +140,7 @@ const GameCard: React.FC<GameCardProps> = ({ id, title, image, genre }) => {
                 </Typography>
                 <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 5, marginBottom: '-6px'}}>
                     <Typography component="div" sx={{ display: 'flex', alignItems: 'center' }}>
-                        {[1, 2, 3, 4, 5].map((index) => (
+                        {[1, 2, 3, 4].map((index) => (
                             <IconButton onClick={() => handleRating(index)} onMouseEnter={() => setRating(index)} onMouseLeave={() => setRating(0)} key={id + index} sx={{margin: '-5px'}}>
                                 <StarIcon key={index} sx={{ color: index <= userRating || index <= rating ? '#FFC107' : '#9E9E9E', fontSize: '18px',  }} />
                             </IconButton>

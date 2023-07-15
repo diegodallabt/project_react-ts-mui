@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
 import { useUI } from "../components/UIProvider";
 import { makeStyles } from '@material-ui/styles';
-import { FormControl, InputLabel, MenuItem, RadioGroup, Select, createTheme, ThemeProvider } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, RadioGroup, Select, createTheme, ThemeProvider, Button } from "@mui/material";
 import GameCard from "../components/GameCard";
 import SearchBar from "../components/SearchBar";
 import RadioOption from "../components/RadioOption";
@@ -21,6 +21,7 @@ import {  useNavigate } from 'react-router-dom';
 import { auth } from '../services/firebaseConfig';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { signOut } from "firebase/auth";
+import { getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
 
 interface Game {
   id: number;
@@ -131,8 +132,11 @@ const GamesList = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [favoriteGameIds, setFavoriteGameIds] = useState<number[]>([]);
+  const [isFavoritesSelected, setIsFavoritesSelected] = useState(true);
   const navigate = useNavigate();
   const user = auth.currentUser;
+  const firestore = getFirestore();
   
 
   const { data, isLoading, isError } = useQuery<Game[], AxiosError>(
@@ -183,6 +187,31 @@ const GamesList = () => {
     }
   );
 
+  useEffect(() => {
+    if(user){
+      const docRef = doc(firestore, "users", user.uid);
+
+      const unsubscribe = onSnapshot(docRef, (docSnap: { exists: () => any; data: () => any; }) => {
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData && userData.savedGames) {
+            setFavoriteGameIds(userData.savedGames);
+          }
+        }
+      });
+  
+      return () => {
+        unsubscribe();
+      };
+    }
+    
+  }, [firestore, user?.uid]);
+
+  const handleFavoritesClick = async () => {
+    setIsFavoritesSelected(!isFavoritesSelected);
+    
+  };
+
   const handleDrawerToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -224,7 +253,8 @@ const GamesList = () => {
   const filteredData = data?.filter(
     (game) =>
       game.title.toLowerCase().startsWith(searchTerm.toLowerCase()) &&
-      (selectedGenre === "" || game.genre === selectedGenre)
+      (selectedGenre === "" || game.genre === selectedGenre) &&
+      (isFavoritesSelected || favoriteGameIds.includes(game.id))
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,10 +271,14 @@ const GamesList = () => {
       });
 
     }).catch((error) => {
-      // An error happened.
+      defineToast({
+        open: true,
+        message: "Ops, aconteceu algo de errado, tente novamente.",
+        title: "Erro",
+        severity: "error",
+      });
     })
   }
-
 
   if (isLoading) {
     return (
@@ -314,18 +348,17 @@ const GamesList = () => {
                     <Box sx={{display:'flex', flexDirection: 'column', marginTop: '15px', marginBottom: '10px', marginRight: '100px', '@media (max-width: 930px)': { marginRight: '0px'}}}>
                       <Box sx={{ display: 'flex', alignItems: 'center'}}>
                         {user?
+                        <div>
+                        <Button onClick={handleFavoritesClick}  sx={{color: '#fff', '&:hover': {backgroundColor: 'transparent'}, marginRight: '15px'}}>{isFavoritesSelected? 'Meus favoritos': 'Voltar'}</Button>
                         <IconButton onClick={handleLogout}>
                           <ExitToAppIcon sx={{color: "#fff", fontSize: '32px'}}/>
                         </IconButton>
+                        </div>
                         :
                         <IconButton onClick={redirectToAuth}>
                           <AccountCircleIcon sx={{color: "#fff", fontSize: '32px'}}/>
                         </IconButton>
                         }
-                        {/* <InputBase placeholder='E-mail' sx={{padding: '2px 10px 2px 10px', color: '#CCCCCC', width: '170px', borderRadius: '3px', marginRight: '10px', backgroundColor: '#3F3F3F'}} />
-                        <InputBase placeholder='Senha' type="password" sx={{padding: '2px 10px 2px 10px', color: '#CCCCCC', borderRadius: '5px', marginRight: '10px', width: '170px', backgroundColor: '#3F3F3F'}}/> */}
-                        {/* <Button variant="contained" sx={{ backgroundColor: '#202020', color: '#ffffff', paddingX: '20px', '&:hover':{backgroundColor: '#1F3275'}}}>Acessar conta</Button> */}
-                        {/* <IconButton><PersonAddIcon sx={{color: "#fff"}}/></IconButton> */}
 
                       </Box>
                     {/* FIM LOGIN NA APPBAR */}
@@ -385,7 +418,7 @@ const GamesList = () => {
             {
               filteredData?.map((game) => (
                 <Grid item xs={12} sm={6} md={4} key={game.id}>
-                  <GameCard id={game.id} title={game.title} image={game.thumbnail} genre={game.genre}/>
+                  <GameCard id={game.id} title={game.title} image={game.thumbnail} genre={game.genre} />
                 </Grid>
               ))
             }
