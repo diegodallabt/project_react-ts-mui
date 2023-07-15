@@ -1,5 +1,4 @@
 import CircularProgress from "@mui/material/CircularProgress";
-
 import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -17,11 +16,11 @@ import { SelectChangeEvent }  from '@mui/material';
 import TextHeader from "../components/TextHeader";
 import TopScrollButton from "../components/TopScrollButton";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {  useNavigate } from 'react-router-dom';
+import {  Link, useNavigate } from 'react-router-dom';
 import { auth } from '../services/firebaseConfig';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { signOut } from "firebase/auth";
-import { getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -214,14 +213,13 @@ const GamesList = () => {
       };
     }
     
-  }, [firestore, user?.uid]);
+  }, [firestore, user?.uid, user]);
 
   useEffect(() => {
     const fetchUserGames = async () => {
       if (user) {
         try {
           const docRef = doc(firestore, "users", user.uid);
-          const docSnap = await getDoc(docRef);
   
           const unsubscribe = onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
@@ -251,7 +249,9 @@ const GamesList = () => {
     };
   
     fetchUserGames();
-  }, [firestore, user?.uid, isWorst]);
+  }, [firestore, user?.uid, isWorst, user]);
+
+  
 
   const handleOrderClick = () => {
     setIsWorst(!isWorst);
@@ -365,6 +365,7 @@ const GamesList = () => {
     <div>
       <AppBar position="static" sx={{ backgroundColor: '#2E2E2E' }}>
             <Toolbar>
+              {/* EXIBIÇÃO EM DISPOSITIVOS MENORES */}
                 <Hidden smUp>
                     <Box sx={{ display: 'flex', alignItems: 'center',  width: '100%' }}>
                       <IconButton onClick={handleDrawerToggle} color="inherit">
@@ -384,22 +385,33 @@ const GamesList = () => {
                       }
                             <Drawer anchor="left" open={isDrawerOpen} onClose={handleDrawerToggle}>
                                 <Box sx={{ width: '320px', backgroundColor: '#2E2E2E', minHeight: '100vh'}}>
-                                    
                                     <Box sx={{ padding: '20px' }}>
                                     <Typography variant="h6" component="div">
                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <Typography variant="h6" component="span" sx={{ color: '#FFFFFF',fontFamily: 'Lato' }}>
+                                            <Typography variant="h6" component="span" sx={{ color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'bold' }}>
                                                 GAME COLLECTION
                                             </Typography>
                                         </Box>
                                     </Typography>
-                                        
+                                    
+                                    {user? (<div>
+                                    <Typography sx={{ color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'light', lineHeight: '15px', marginTop: '15px'}}>
+                                      Use o botão para navegar entre seus jogos favoritos e todos os jogos da lista.
+                                    </Typography> 
+                                    <Button fullWidth onClick={handleFavoritesClick}  sx={{marginTop: '20px', color: '#FFFFFF', backgroundColor: '#202020', fontFamily: 'Lato', fontWeight: 'bold', '&:hover':{backgroundColor: '#202020'}}}>{isFavoritesSelected? 'Meus favoritos': 'Todos os jogos'}</Button>
+                                    </div>): (
+                                    <Typography sx={{ color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'light', lineHeight: '15px'}}>
+                                      Para usar todos os recursos disponíveis e desbloquear a sua coleção, <Link style={{textDecoration: 'none', color: '#FFFFFF', fontWeight: 'bold'}} to='/auth'>faça login</Link>.
+                                    </Typography>
+                                    )}
                                     </Box>
                                 </Box>
                             </Drawer>
                         </Box>
                     </Hidden>
-                    
+                  {/* FIM EXIBIÇÃO EM DISPOSITIVOS MENORES */}
+                
+                {/* EXIBIÇÃO EM DISPOSITIVOS MAIORES */}
                 <Hidden smDown>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center'}}>
                     <Typography variant="h6" component="div">
@@ -414,7 +426,7 @@ const GamesList = () => {
                       <Box sx={{ display: 'flex', alignItems: 'center'}}>
                         {user?
                         <div>
-                        <Button onClick={handleFavoritesClick}  sx={{color: '#fff', '&:hover': {backgroundColor: 'transparent'}, marginRight: '15px'}}>{isFavoritesSelected? 'Meus favoritos': 'Voltar'}</Button>
+                        <Button onClick={handleFavoritesClick}  sx={{color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'bold', '&:hover': {backgroundColor: 'transparent'}, marginRight: '15px'}}>{isFavoritesSelected? 'Meus favoritos': 'Voltar'}</Button>
                         <IconButton onClick={handleLogout}>
                           <ExitToAppIcon sx={{color: "#fff", fontSize: '32px'}}/>
                         </IconButton>
@@ -432,6 +444,7 @@ const GamesList = () => {
                     
                 </Box>
                 </Hidden>
+                {/* FIM DA EXIBIÇÃO EM DISPOSITIVOS MAIORES */}
             </Toolbar>
         </AppBar>
       
@@ -470,7 +483,7 @@ const GamesList = () => {
 
       {/* INICIO DO GRID DE CARDS*/}
       {user? (<div style={{display: 'flex', justifyContent: 'end' }}>
-      <Typography variant="body1" component="span" sx={{color: '#fff'}}>
+      <Typography variant="body1" component="span" sx={{color: '#FFFFFF',fontFamily: 'Lato', fontWeight: 'light'}}>
         {isWorst ? "Piores avaliações" : "Melhores avaliações"}
       </Typography>
       {isWorst ? (

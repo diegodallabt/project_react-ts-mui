@@ -1,0 +1,21 @@
+@keyframes heartBeating {
+    0% {
+        transform: scale(1.4);
+    }
+    25% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.4);
+    }
+    75% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.4);
+    }
+  }
+  
+  .heartBeating {
+    animation: heartBeating 2s linear;
+  }
