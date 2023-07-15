@@ -22,12 +22,19 @@ import { auth } from '../services/firebaseConfig';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { signOut } from "firebase/auth";
 import { getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 interface Game {
   id: number;
   thumbnail: string;
   title: string;
   genre: string;
+}
+
+interface Rating {
+  id: string;
+  rate: number;
 }
 
 const theme = createTheme({
@@ -132,7 +139,9 @@ const GamesList = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isWorst, setIsWorst] = useState(false);
   const [favoriteGameIds, setFavoriteGameIds] = useState<number[]>([]);
+  const [ratings, setRatings] = useState<Rating[]>([]);
   const [isFavoritesSelected, setIsFavoritesSelected] = useState(true);
   const navigate = useNavigate();
   const user = auth.currentUser;
@@ -207,6 +216,47 @@ const GamesList = () => {
     
   }, [firestore, user?.uid]);
 
+  useEffect(() => {
+    const fetchUserGames = async () => {
+      if (user) {
+        try {
+          const docRef = doc(firestore, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+  
+          const unsubscribe = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+              const userData = docSnap.data();
+              if (userData && userData.ratings) {
+                const ratings = userData.ratings;
+
+                const ratingsArray: Rating[] = Object.keys(ratings)
+                  .map((gameId) => ({
+                    id: gameId,
+                    rate: ratings[gameId],
+                  }))
+                  .sort((a, b) => isWorst? a.rate - b.rate : b.rate - a.rate);
+  
+                setRatings(ratingsArray);
+              }
+            }
+          });
+  
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.error("Erro ao buscar jogos avaliados:", error);
+        }
+      }
+    };
+  
+    fetchUserGames();
+  }, [firestore, user?.uid, isWorst]);
+
+  const handleOrderClick = () => {
+    setIsWorst(!isWorst);
+  };
+
   const handleFavoritesClick = async () => {
     setIsFavoritesSelected(!isFavoritesSelected);
     
@@ -256,6 +306,21 @@ const GamesList = () => {
       (selectedGenre === "" || game.genre === selectedGenre) &&
       (isFavoritesSelected || favoriteGameIds.includes(game.id))
   );
+
+  const filteredAndOrderedData = filteredData?.sort((a, b) => {
+    const ratingA = ratings.find((rating) => rating.id === a.id.toString());
+    const ratingB = ratings.find((rating) => rating.id === b.id.toString());
+  
+    if (ratingA && ratingB) {
+      return isWorst ? ratingA.rate - ratingB.rate : ratingB.rate - ratingA.rate;;
+    } else if (ratingA) {
+      return -1;
+    } else if (ratingB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -344,7 +409,7 @@ const GamesList = () => {
                         </Box>
                     </Typography>
 
-                    {/* LOGIN NA APPBAR */}
+                    {/* ICONES DE LOGIN E LOGOUT NA APPBAR */}
                     <Box sx={{display:'flex', flexDirection: 'column', marginTop: '15px', marginBottom: '10px', marginRight: '100px', '@media (max-width: 930px)': { marginRight: '0px'}}}>
                       <Box sx={{ display: 'flex', alignItems: 'center'}}>
                         {user?
@@ -404,6 +469,20 @@ const GamesList = () => {
       {/* FIM DO HEADER */}
 
       {/* INICIO DO GRID DE CARDS*/}
+      {user? (<div style={{display: 'flex', justifyContent: 'end' }}>
+      <Typography variant="body1" component="span" sx={{color: '#fff'}}>
+        {isWorst ? "Piores avaliações" : "Melhores avaliações"}
+      </Typography>
+      {isWorst ? (
+      <IconButton onClick={handleOrderClick}>
+        <KeyboardArrowDownIcon sx={{color: "#fff", marginTop: '-7px'}}/>
+      </IconButton>
+      ) : (
+      <IconButton onClick={handleOrderClick}>
+        <KeyboardArrowUpIcon sx={{color: "#fff", marginTop: '-7px'}}/>
+      </IconButton>) }
+      </div>): ""}
+      
       {filteredData && filteredData.length > 0 ? (
         <div style={{borderTop: "1px solid #2E2E2E"}}>
           <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: 30, marginBottom: 20}}>
@@ -416,7 +495,7 @@ const GamesList = () => {
           </div>
           <Grid container spacing={2}>
             {
-              filteredData?.map((game) => (
+              filteredAndOrderedData?.map((game) => (
                 <Grid item xs={12} sm={6} md={4} key={game.id}>
                   <GameCard id={game.id} title={game.title} image={game.thumbnail} genre={game.genre} />
                 </Grid>
