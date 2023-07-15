@@ -48,7 +48,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onchange, msg }) => {
     const style = useStyles();
     return <div className={style.textfieldContent}>
         
-        <TextField id="search-textfield" value={searchTerm} onChange={onchange} label={msg} variant="outlined" size="small" className={style.textfield}
+        <TextField id="search-textfield" autoComplete="off" value={searchTerm} onChange={onchange} label={msg} variant="outlined" size="small" className={style.textfield}
         InputProps={{
             style: {
             width: '85%',

@@ -259,7 +259,6 @@ const GamesList = () => {
 
   const handleFavoritesClick = async () => {
     setIsFavoritesSelected(!isFavoritesSelected);
-    
   };
 
   const handleDrawerToggle = () => {
@@ -304,7 +303,7 @@ const GamesList = () => {
     (game) =>
       game.title.toLowerCase().startsWith(searchTerm.toLowerCase()) &&
       (selectedGenre === "" || game.genre === selectedGenre) &&
-      (isFavoritesSelected || favoriteGameIds.includes(game.id))
+      ( !user || isFavoritesSelected || favoriteGameIds.includes(game.id))
   );
 
   const filteredAndOrderedData = filteredData?.sort((a, b) => {
@@ -327,6 +326,8 @@ const GamesList = () => {
   };
 
   const handleLogout = () => {
+    setIsFavoritesSelected(false);
+    console.log(isFavoritesSelected)
     signOut(auth).then(() => {
       defineToast({
         open: true,
