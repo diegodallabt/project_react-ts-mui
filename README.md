@@ -25,11 +25,11 @@ Para a segunda etapa, fiz algumas mudanças visuais para adaptar os novos requis
 
 Além disso, era necessário acrescentar informações na tela, então para deixar mais contextualizado para o usuário, criei um menu, agora adicionando informações como um nome e uma logo para a página, para mais, em dispositivos mobile, foi adicionado um menu lateral para funções extras do menu, tentado deixar mais compacto e o menos poluído possível para o usuário.
 
-No demais, foi criada uma nova página para a autenticação do usuário com o firebase, além das funções de filtragem por avaliação e por jogos favoritos do usuário.
+No demais, foi criada uma nova página para a autenticação do usuário com o firebase, além das funções de filtragem por avaliação (seguindo a ordenação sugerida, primeiro os itens ordenados e depois os itens sem avaliação) e por jogos favoritos do usuário.
 
 Por fim, a animação CSS escolhida para favoritar um jogo foi pensando no contexto da ação, então eu criei uma animação que simula o batimento cardíaco sempre que um jogo é favoritado.
 
-## Sugestões futuras
+## Sugestões futuras para mim
 
 - Acredito que algo que talvez eu fizesse diferente fosse usar o NextJS para a segunda etapa para facilitar, porém não foi algo que trouxe muita complicação, seria apenas um facilitador. Mas como o projeto inicialmente já estava hospedado no github pages (que infelizmente não suporta o next) e era necessário usar o mesmo link, então optei por não fazer a migração.
 
