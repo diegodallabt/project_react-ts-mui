@@ -327,7 +327,6 @@ const GamesList = () => {
 
   const handleLogout = () => {
     setIsFavoritesSelected(false);
-    console.log(isFavoritesSelected)
     signOut(auth).then(() => {
       defineToast({
         open: true,
