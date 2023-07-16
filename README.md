@@ -31,7 +31,7 @@ Por fim, a animação CSS escolhida para favoritar um jogo foi pensando no conte
 
 ## Sugestões futuras para mim
 
-- Acredito que algo que talvez eu fizesse diferente fosse usar o NextJS para a segunda etapa para facilitar, porém não foi algo que trouxe muita complicação, seria apenas um facilitador. Mas como o projeto inicialmente já estava hospedado no github pages (que infelizmente não suporta o next) e era necessário usar o mesmo link, então optei por não fazer a migração.
+- Acredito que algo que talvez eu fizesse diferente fosse usar o NextJS para a segunda etapa para facilitar, porém não foi algo que trouxe muita complicação, seria apenas um facilitador. Mas como o projeto inicialmente já estava hospedado no github pages (que infelizmente não suporta o Next) e era necessário usar o mesmo link, então optei por não fazer a migração.
 
 ## Considerações finais
 
