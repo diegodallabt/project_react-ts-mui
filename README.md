@@ -5,7 +5,7 @@ Essa é a minha versão do projeto de uma coleção de jogos para a segunda etap
 ## Web page
 ![Web page](public/page-web2.png)
 
-Essa é a página inicial da aplicação, onde contém o campo de pesquisa,  o filtro por gênero, o ícone para realizar a autenticação e os cards contendo os ícones de avaliação (com as notas já avaliadas por outros usuários) e o ícone para favoritar um jogo.
+Essa é a página inicial da aplicação, onde contém o campo de pesquisa,  o filtro por gênero, o ícone para realizar a autenticação e os cards contendo os ícones de avaliação (com as notas já avaliadas por outros usuários) e o ícone para favoritar um jogo. Neste caso, a página exibida é quando o usuário não está logado, ao logar são exibidos os filtros como jogos favoritos do usuário e ordenação por avaliação.
 
 ## Auth page
 ![Auth page](public/page-auth.png)     
