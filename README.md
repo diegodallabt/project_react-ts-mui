@@ -1,6 +1,6 @@
 # Game Collection - React/TypeScript/MUI5
 
-Essa é a minha versão do projeto de uma coleção de jogos para a segunda etapa do processo seletivo.
+Esta é a minha versão do projeto de uma coleção de jogos para a segunda etapa do processo seletivo.
 
 ## Web page
 ![Web page](public/page-web2.png)
