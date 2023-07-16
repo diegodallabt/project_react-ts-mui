@@ -5,14 +5,17 @@ Essa é a minha versão do projeto de uma coleção de jogos para a segunda etap
 ## Web page
 ![Web page](public/page-web2.png)
 
-Essa é a página inicial da aplicação, onde contém o campo de pesquisa,  o filtro por gênero, o ícone para realizar a autenticação e os cards contendo os ícones de avaliação (com as notas já avaliadas por outros usuários) e o ícone para favoritar um jogo. 
+Essa é a página inicial da aplicação, onde contém o campo de pesquisa,  o filtro por gênero, o ícone para realizar a autenticação e os cards contendo os ícones de avaliação (com as notas já avaliadas por outros usuários) e o ícone para favoritar um jogo.
 
-Vale ressaltar que essa é a página sem ter sido efetuado o login.
+## Auth page
+![Auth page](public/page-auth.png)     
+
+Essa é a página de autenticação via firebase, com um visual compacto e responsivo, que alterna entre login e cadastro se mantendo na mesma rota.
 
 ## Mobile page
 ![Mobile page](public/page-mobile2.png)
 
-Essa é a página mobile da aplicação, com um visual mais compacto contendo as mesmas funções da página Web.
+Essa é a página mobile da aplicação, com um visual mais compacto contendo as mesmas funções da página Web, com algumas mudanças no visual do filtro de gênero e com a adição de um menu lateral.
 
 ## Visão geral
 
@@ -28,7 +31,7 @@ Por fim, a animação CSS escolhida para favoritar um jogo foi pensando no conte
 
 ## Sugestões futuras
 
-- Acredito que algo que talvez eu fizesse diferente fosse usar o NextJS para a segunda etapa para facilitar, porém não foi algo que trouxe muita complicação, seria apenas um facilitador. Mas como o projeto inicialmente já estava hospedado no github pages (que infelizmente não suporta o next) e era necessário usar o mesmo link, então não foi possível fazer a migração.
+- Acredito que algo que talvez eu fizesse diferente fosse usar o NextJS para a segunda etapa para facilitar, porém não foi algo que trouxe muita complicação, seria apenas um facilitador. Mas como o projeto inicialmente já estava hospedado no github pages (que infelizmente não suporta o next) e era necessário usar o mesmo link, então optei por não fazer a migração.
 
 ## Considerações finais
 
